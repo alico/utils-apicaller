@@ -8,14 +8,14 @@ namespace Utils.APICaller
 {
     public static class ApiCaller<T> where T : class
     {
-        public static async Task<APICallResponseDTO<T>> GetAsync(APICallRequestDTO request)
+        public static async Task<APICallResponseModel<T>> GetAsync(APICallRequestModel request)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     var queryString = request.RequestObject.ToQueryString();
-                    var url = RequestHelpers.GetRequestUrl(request.Url, request.MethodName, queryString);
+                    var url = RequestHelpers.GetRequestUrl(request.Url, request.Endpoint, queryString);
 
                     client.DefaultRequestHeaders.Accept.Clear();
 
@@ -35,7 +35,7 @@ namespace Utils.APICaller
                         using HttpContent content = httpResponse.Content;
                         var json = await content.ReadAsStringAsync();
 
-                        var apiResponse = new APICallResponseDTO<T>();
+                        var apiResponse = new APICallResponseModel<T>();
                         apiResponse.StatusCode = (int)httpResponse.StatusCode;
 
                         if (httpResponse.IsSuccessStatusCode)
@@ -53,12 +53,12 @@ namespace Utils.APICaller
             }
         }
 
-        public static async Task<APICallResponseDTO<T>> PostAsync(APICallRequestDTO request)
+        public static async Task<APICallResponseModel<T>> PostAsync(APICallRequestModel request)
         {
             try
             {
                 using HttpClient client = new HttpClient();
-                var url = RequestHelpers.GetRequestUrl(request.Url, request.MethodName);
+                var url = RequestHelpers.GetRequestUrl(request.Url, request.Endpoint);
                 var postContent = RequestHelpers.CreateRequestBodyContent(request.RequestObject, request.ContentType);
 
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -81,7 +81,7 @@ namespace Utils.APICaller
                     using HttpContent content = httpResponse.Content;
                     var json = await content.ReadAsStringAsync();
 
-                    var apiResponse = new APICallResponseDTO<T>();
+                    var apiResponse = new APICallResponseModel<T>();
                     apiResponse.StatusCode = (int)httpResponse.StatusCode;
 
                     if (httpResponse.IsSuccessStatusCode)
@@ -98,12 +98,12 @@ namespace Utils.APICaller
             }
         }
 
-        public static async Task<APICallResponseDTO<T>> PutAsync(APICallRequestDTO request)
+        public static async Task<APICallResponseModel<T>> PutAsync(APICallRequestModel request)
         {
             try
             {
                 using HttpClient client = new HttpClient();
-                var url = RequestHelpers.GetRequestUrl(request.Url, request.MethodName);
+                var url = RequestHelpers.GetRequestUrl(request.Url, request.Endpoint);
                 var postContent = RequestHelpers.CreateRequestBodyContent(request.RequestObject, request.ContentType);
                 var contentJson = JsonConvert.SerializeObject(request);
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -124,7 +124,7 @@ namespace Utils.APICaller
                     using HttpContent content = httpResponse.Content;
                     var json = await content.ReadAsStringAsync();
 
-                    var apiResponse = new APICallResponseDTO<T>();
+                    var apiResponse = new APICallResponseModel<T>();
                     apiResponse.StatusCode = (int)httpResponse.StatusCode;
 
                     if (httpResponse.IsSuccessStatusCode)
@@ -141,14 +141,14 @@ namespace Utils.APICaller
             }
         }
 
-        public static async Task<APICallResponseDTO<T>> DeleteAsync(APICallRequestDTO request)
+        public static async Task<APICallResponseModel<T>> DeleteAsync(APICallRequestModel request)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     var queryString = request.RequestObject.ToQueryString();
-                    var url = RequestHelpers.GetRequestUrl(request.Url, request.MethodName, queryString);
+                    var url = RequestHelpers.GetRequestUrl(request.Url, request.Endpoint, queryString);
 
                     client.DefaultRequestHeaders.Accept.Clear();
 
@@ -168,7 +168,7 @@ namespace Utils.APICaller
                         using HttpContent content = httpResponse.Content;
                         var json = await content.ReadAsStringAsync();
 
-                        var apiResponse = new APICallResponseDTO<T>();
+                        var apiResponse = new APICallResponseModel<T>();
                         apiResponse.StatusCode = (int)httpResponse.StatusCode;
 
                         if (httpResponse.IsSuccessStatusCode)
